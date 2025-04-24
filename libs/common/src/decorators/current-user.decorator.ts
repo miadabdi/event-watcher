@@ -1,11 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Request } from 'express';
-import { UserDto } from '../dtos';
+import { AgentDto } from '../dtos';
 
-function extractUser(context: ExecutionContext): UserDto {
-  return context.switchToHttp().getRequest<Request>().user;
+function extractAgent(context: ExecutionContext): AgentDto {
+  return context.switchToHttp().getRequest().user;
 }
 
-export const CurrentUser = createParamDecorator(
-  (_data: unknown, context: ExecutionContext) => extractUser(context),
+export const CurrentAgent = createParamDecorator(
+  (_data: unknown, context: ExecutionContext) => extractAgent(context),
 );

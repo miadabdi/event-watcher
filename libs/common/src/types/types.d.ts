@@ -1,9 +1,11 @@
+import { AgentDto } from '../dtos';
+
 declare namespace Express {
   export interface Request {
-    user: UserDto;
+    user: AgentDto;
     cookies: object;
   }
   export interface Response {
-    user: UserDto;
+    user: AgentDto;
   }
 }

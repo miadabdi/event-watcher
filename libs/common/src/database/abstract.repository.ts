@@ -12,6 +12,16 @@ export abstract class AbstractRepository<TDocument> {
     return createdDocument.toJSON() as TDocument;
   }
 
+  async createMany(
+    documents: Array<Omit<TDocument, '_id'>>,
+  ): Promise<TDocument[]> {
+    const createdDocuments = await this.model.create(documents);
+
+    return createdDocuments.map((doc) => {
+      return doc.toJSON() as TDocument;
+    });
+  }
+
   async findOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
     const document = await this.model
       .findOne<TDocument>(filterQuery)
