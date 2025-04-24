@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../../../../libs/common/src';
+import { RulesModule } from '../rules/rules.module';
 import { EventsController } from './events.controller';
+import { EventsRepository } from './events.repository';
 import { EventsService } from './events.service';
+import { MatchesRepository } from './matches.repository';
 import { EventsDocument, EventsSchema } from './models/events.model';
 import { MatchesDocument, MatchesSchema } from './models/matches.model';
 
 @Module({
   imports: [
+    RulesModule,
     DatabaseModule.forFeature([
       {
         name: EventsDocument.name,
@@ -19,6 +23,6 @@ import { MatchesDocument, MatchesSchema } from './models/matches.model';
     ]),
   ],
   controllers: [EventsController],
-  providers: [EventsService],
+  providers: [EventsService, MatchesRepository, EventsRepository],
 })
 export class EventsModule {}

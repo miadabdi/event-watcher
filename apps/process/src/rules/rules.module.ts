@@ -16,5 +16,6 @@ import { RulesService } from './rules.service';
   ],
   controllers: [RulesController],
   providers: [RulesService, RulesRepository],
+  exports: [RulesService],
 })
 export class RulesModule {}

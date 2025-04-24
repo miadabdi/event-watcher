@@ -47,7 +47,6 @@ services:
 
   mongo:
     image: mongo
-    container_name: mongo
     restart: unless-stopped
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}

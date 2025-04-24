@@ -17,24 +17,28 @@ import { RulesModule } from './rules/rules.module';
         MONGODB_URI: Joi.string().required(),
         AUTH_HOST: Joi.string().required(),
         AUTH_PORT: Joi.number().required(),
+        RABBITMQ_URL: Joi.string().required(),
       }),
     }),
     LoggerModule,
-    ClientsModule.registerAsync([
-      {
-        name: AUTH_SERVICE,
-        useFactory: (configService: ConfigService) => {
-          return {
-            transport: Transport.RMQ,
-            options: {
-              urls: [configService.getOrThrow<string>('RABBITMQ_URL')],
-              queue: AUTH_SERVICE,
-            },
-          };
+    ClientsModule.registerAsync({
+      isGlobal: true,
+      clients: [
+        {
+          name: AUTH_SERVICE,
+          useFactory: (configService: ConfigService) => {
+            return {
+              transport: Transport.RMQ,
+              options: {
+                urls: [configService.getOrThrow<string>('RABBITMQ_URL')],
+                queue: AUTH_SERVICE,
+              },
+            };
+          },
+          inject: [ConfigService],
         },
-        inject: [ConfigService],
-      },
-    ]),
+      ],
+    }),
     EventsModule,
     RulesModule,
   ],
