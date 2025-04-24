@@ -1,19 +1,19 @@
 services:
-  # process:
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/process/Dockerfile
-  #     target: development
-  #   command: pnpm run start:debug process
-  #   ports:
-  #     - '3000:3000'
-  #     - '9229:9229'
-  #   volumes:
-  #     - ./:/usr/src/app
-  #   env_file:
-  #     - ./apps/process/.env
-  #   depends_on:
-  #     - mongo
+  process:
+    build:
+      context: .
+      dockerfile: ./apps/process/Dockerfile
+      target: development
+    command: pnpm run start:debug process
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./apps/process/.env
+    depends_on:
+      - mongo
 
   auth:
     build:
@@ -31,5 +31,29 @@ services:
     depends_on:
       - mongo
 
+  rabbitmq:
+    image: rabbitmq:3.13.1-management
+    hostname: rmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
   mongo:
     image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASS}
+    healthcheck:
+      test: ['CMD', 'mongo', '--eval', "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
