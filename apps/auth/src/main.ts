@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as cookieParser from 'cookie-parser';
 import { Logger } from 'nestjs-pino';
+import { AUTH_SERVICE } from '../../../libs/common/src';
 import { AuthModule } from './auth.module';
 
 async function bootstrap() {
@@ -11,10 +12,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: '0.0.0.0',
-      port: configService.getOrThrow<number>('TCP_PORT'),
+      urls: [configService.getOrThrow<string>('RABBITMQ_URL')],
+      queue: AUTH_SERVICE,
     },
   });
 

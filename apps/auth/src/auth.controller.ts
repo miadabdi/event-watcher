@@ -1,4 +1,4 @@
-import { CurrentUser } from '@app/common';
+import { CurrentAgent } from '@app/common';
 import { Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Response } from 'express';
@@ -14,7 +14,7 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   login(
-    @CurrentUser() agent: AgentsDocument,
+    @CurrentAgent() agent: AgentsDocument,
     @Res({ passthrough: true }) response: Response,
   ) {
     this.authService.login(agent, response);

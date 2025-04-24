@@ -30,6 +30,8 @@ import { LocalStrategy } from './strategies/local.strategy';
         JWT_EXPIRES: Joi.number().required(),
         HTTP_PORT: Joi.number().required(),
         TCP_PORT: Joi.number().required(),
+        RABBITMQ_USER: Joi.string().required(),
+        RABBITMQ_PASS: Joi.string().required(),
       }),
     }),
   ],

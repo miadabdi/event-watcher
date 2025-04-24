@@ -1,4 +1,4 @@
-import { CurrentUser } from '@app/common';
+import { CurrentAgent } from '@app/common';
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JWTAuthGuard } from '../guards/jwt-auth.guard';
 import { AgentsService } from './agents.service';
@@ -16,7 +16,7 @@ export class AgentsController {
 
   @Get('me')
   @UseGuards(JWTAuthGuard)
-  getMe(@CurrentUser() user: AgentsDocument) {
-    return user;
+  getMe(@CurrentAgent() agent: AgentsDocument) {
+    return agent;
   }
 }

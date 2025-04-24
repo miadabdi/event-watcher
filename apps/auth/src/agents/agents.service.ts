@@ -13,11 +13,15 @@ export class AgentsService {
   constructor(private agentsRepository: AgentsRepository) {}
 
   async createAgent(createAgentDto: CreateAgentDto) {
-    const user = await this.agentsRepository.findOne({
-      identifier: createAgentDto.identifier,
-    });
-    if (user) {
-      throw new BadRequestException('Email already registered');
+    try {
+      const user = await this.agentsRepository.findOne({
+        identifier: createAgentDto.identifier,
+      });
+      if (user) {
+        throw new BadRequestException('Agent already registered');
+      }
+    } catch {
+      //
     }
 
     return this.agentsRepository.create({
@@ -38,8 +42,8 @@ export class AgentsService {
     return user;
   }
 
-  async getAgent(_id: string) {
-    const user = await this.agentsRepository.findOne({ _id });
+  async getAgent(identifier: string) {
+    const user = await this.agentsRepository.findOne({ identifier });
 
     if (!user) {
       throw new NotFoundException('Agent not found');
