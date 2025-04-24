@@ -1,0 +1,35 @@
+services:
+  process:
+    build:
+      context: .
+      dockerfile: ./apps/process/Dockerfile
+      target: development
+    command: pnpm run start:debug process
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./apps/process/.env
+    depends_on:
+      - mongo
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:debug auth
+    ports:
+      - '3001:3001'
+      - '9230:9229'
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
