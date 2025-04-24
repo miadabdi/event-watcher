@@ -1,3 +1,3 @@
 export interface IJWTPayload {
-  _id: string;
+  identifier: string;
 }

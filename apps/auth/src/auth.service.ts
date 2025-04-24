@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { ClientsDocument } from './clients/models/clients.model';
+import { AgentsDocument } from './agents/models/agents.model';
 import { IJWTPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
@@ -12,9 +12,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  login(client: ClientsDocument, response: Response) {
+  login(agent: AgentsDocument, response: Response) {
     const JWTPayload: IJWTPayload = {
-      _id: client._id.toHexString(),
+      identifier: agent.identifier,
     };
 
     const expiresIn = new Date();

@@ -1,8 +1,8 @@
 import { AbstractDocument } from '@app/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema({ versionKey: false, collection: 'clients' })
-export class ClientsDocument extends AbstractDocument {
+@Schema({ versionKey: false, collection: 'agents' })
+export class AgentsDocument extends AbstractDocument {
   @Prop({ unique: true })
   identifier: string;
 
@@ -10,4 +10,4 @@ export class ClientsDocument extends AbstractDocument {
   password: string;
 }
 
-export const ClientsSchema = SchemaFactory.createForClass(ClientsDocument);
+export const AgentsSchema = SchemaFactory.createForClass(AgentsDocument);
