@@ -1,10 +1,10 @@
+import { AUTH_SERVICE } from '@app/common';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as cookieParser from 'cookie-parser';
 import { Logger } from 'nestjs-pino';
-import { AUTH_SERVICE } from '../../../libs/common/src';
 import { AuthModule } from './auth.module';
 
 async function bootstrap() {

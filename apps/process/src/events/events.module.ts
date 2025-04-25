@@ -1,5 +1,5 @@
+import { DatabaseModule } from '@app/common';
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../../../../libs/common/src';
 import { RulesModule } from '../rules/rules.module';
 import { EventsController } from './events.controller';
 import { EventsRepository } from './events.repository';
