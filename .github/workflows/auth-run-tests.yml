@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - development
+      - feat/actions
   pull_request_target:
     paths:
       - 'apps/auth/**'
@@ -30,7 +31,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install PNPM
         run: npm install -g pnpm
