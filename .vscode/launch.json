@@ -7,13 +7,13 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "Reservations App Debug",
+      "name": "Process App Debug",
       "address": "localhost",
       "port": 9229,
       "sourceMaps": true,
       "restart": true,
-      "localRoot": "${workspaceFolder}/apps/reservations/src",
-      "remoteRoot": "/usr/src/app/apps/reservations/src"
+      "localRoot": "${workspaceFolder}/apps/process/src",
+      "remoteRoot": "/usr/src/app/apps/process/src"
     },
     {
       "type": "node",
@@ -25,6 +25,17 @@
       "restart": true,
       "localRoot": "${workspaceFolder}/apps/auth/src",
       "remoteRoot": "/usr/src/app/apps/auth/src"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Agent App Debug",
+      "address": "localhost",
+      "port": 9231,
+      "sourceMaps": true,
+      "restart": true,
+      "localRoot": "${workspaceFolder}/apps/agent/src",
+      "remoteRoot": "/usr/src/app/apps/agent/src"
     }
   ]
 }
