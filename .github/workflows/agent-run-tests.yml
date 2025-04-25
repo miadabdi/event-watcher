@@ -1,0 +1,54 @@
+name: Run Tests for Agent Service
+
+on:
+  push:
+    paths:
+      - 'apps/agent/**'
+    branches:
+      - main
+      - development
+      - fix/actions
+  pull_request_target:
+    paths:
+      - 'apps/agent/**'
+    branches:
+      - main
+      - development
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22.14.0'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install -r
+
+      - name: Run linter
+        run: pnpm run lint
+
+      - name: Run unit tests
+        run: pnpm run test
+
+      # - name: Run e2e tests
+      #   run: pnpm run test:e2e
+      #   env:
+      #     DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+      #     NODE_ENV: test
+
+      # - name: Generate coverage report
+      #   run: pnpm run test:cov
