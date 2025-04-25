@@ -10,7 +10,7 @@ export class EventsDocument extends AbstractDocument {
   @Prop({ type: SchemaTypes.Number })
   value: number;
 
-  @Prop({ type: SchemaTypes.String })
+  @Prop({ type: SchemaTypes.String, index: true })
   eventName: string;
 }
 

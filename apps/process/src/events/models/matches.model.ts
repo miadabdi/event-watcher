@@ -10,10 +10,10 @@ export class MatchesDocument extends AbstractDocument {
   @Prop({ type: SchemaTypes.Number })
   value: number;
 
-  @Prop({ type: SchemaTypes.String })
+  @Prop({ type: SchemaTypes.String, index: true })
   eventName: string;
 
-  @Prop({ type: SchemaTypes.ObjectId })
+  @Prop({ type: SchemaTypes.ObjectId, index: true })
   ruleId: Types.ObjectId;
 }
 
