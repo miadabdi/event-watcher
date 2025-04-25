@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -6,14 +7,33 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateRuleDto } from './dto/create-rule.dto';
+import { GetAgentsByTriggerCountDto } from './dto/get-agents-by-trigger-count.dto';
+import { GetRuleTriggersDto } from './dto/get-rule-triggers.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { RulesService } from './rules.service';
 
 @Controller('rules')
 export class RulesController {
   constructor(private readonly rulesService: RulesService) {}
+
+  @Get('triggers')
+  async getRuleTriggers(@Query() query: GetRuleTriggersDto) {
+    const from = new Date(query.from);
+    const to = new Date(query.to);
+    if (to.getTime() - from.getTime() > 24 * 60 * 60 * 1000) {
+      throw new BadRequestException('Time range cannot exceed 1 day');
+    }
+
+    return this.rulesService.getRuleTriggers(query.ruleId, from, to);
+  }
+
+  @Get('agents-by-trigger-count')
+  async getAgentsByTriggerCount(@Query() query: GetAgentsByTriggerCountDto) {
+    return this.rulesService.getAgentsByTriggerCount(query.ruleId);
+  }
 
   @Post()
   create(@Body() createRuleDto: CreateRuleDto) {
