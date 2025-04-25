@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - development
-      - feat/actions
+      - fix/actions
   pull_request_target:
     paths:
       - 'apps/auth/**'
