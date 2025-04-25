@@ -59,6 +59,45 @@ docker compose up --build
 
 ---
 
+### Run with Docker Images
+
+You can also run each service using pre-built Docker images. Make sure RabbitMQ and MongoDB are running and accessible.
+
+#### Auth Service
+
+```bash
+docker run --network=host \
+  -e MONGODB_URI="mongodb://user:pass@mongo/event-watcher" \
+  -e JWT_EXPIRES=36000 \
+  -e JWT_SECRET=randomsecret \
+  -e HTTP_PORT=3001 \
+  -e RABBITMQ_URL="amqp://user:pass@rabbitmq:5672" \
+  miadabdi/event-watcher-auth:stable-latest
+```
+
+#### Process Service
+
+```bash
+docker run --network=host \
+  -e MONGODB_URI="mongodb://user:pass@mongo/event-watcher" \
+  -e RABBITMQ_URL="amqp://user:pass@rabbitmq:5672" \
+  miadabdi/event-watcher-process:stable-latest
+```
+
+#### Agent Service
+
+```bash
+docker run --network=host \
+  -e RABBITMQ_URL="amqp://user:pass@rabbitmq:5672" \
+  -e AGENT_ID=id \
+  -e AGENT_PASSWORD=test \
+  miadabdi/event-watcher-agent:stable-latest
+```
+
+- Adjust `--network=host` as needed for your environment (or use Docker networks).
+
+---
+
 ## Useful Commands
 
 - **Run tests:**
