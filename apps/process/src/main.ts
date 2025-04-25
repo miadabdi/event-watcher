@@ -31,9 +31,10 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
   await app.listen(port ?? 3000);
-  process.on('unhandledRejection', (reason) => {
-    console.error('Unhandled Rejection:', reason);
-    process.exit(1);
-  });
 }
 bootstrap();
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
+  process.exit(1);
+});

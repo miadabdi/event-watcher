@@ -9,9 +9,10 @@ async function bootstrap() {
   // await app.init();
   // apparently this line is required for debbuger to attach
   await app.listen(3000);
-  process.on('unhandledRejection', (reason) => {
-    console.error('Unhandled Rejection:', reason);
-    process.exit(1);
-  });
 }
 bootstrap();
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
+  process.exit(1);
+});
