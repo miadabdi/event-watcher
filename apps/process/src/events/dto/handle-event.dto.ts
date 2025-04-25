@@ -1,6 +1,6 @@
+import { AgentDto } from '@app/common';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { AgentsDocument } from '../../../../auth/src/agents/models/agents.model';
 
 export class HandleEventDto {
   @IsString()
@@ -11,5 +11,5 @@ export class HandleEventDto {
   @Type(() => Number)
   value: number;
 
-  user: AgentsDocument;
+  user: AgentDto;
 }
