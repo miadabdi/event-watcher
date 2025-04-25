@@ -2,36 +2,36 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { AgentsService } from './agents/agents.service';
-import { AgentsDocument } from './agents/models/agents.model';
 import { LoginMicroservicesDto } from './dto/login-microservices.dto';
 import { IJWTPayload } from './interfaces/jwt-payload.interface';
+import { UsersDocument } from './users/models/users.model';
+import { UsersService } from './users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private configService: ConfigService,
     private jwtService: JwtService,
-    private agentsService: AgentsService,
+    private usersService: UsersService,
   ) {}
 
-  generateToken(agent: AgentsDocument): string {
+  generateToken(user: UsersDocument): string {
     const JWTPayload: IJWTPayload = {
-      identifier: agent.identifier,
+      _id: user._id.toHexString(),
     };
     const token = this.jwtService.sign(JWTPayload);
 
     return token;
   }
 
-  login(agent: AgentsDocument, response: Response) {
+  login(user: UsersDocument, response: Response) {
     const expiresIn = new Date();
     expiresIn.setSeconds(
       expiresIn.getSeconds() +
         this.configService.getOrThrow<number>('JWT_EXPIRES'),
     );
 
-    const token = this.generateToken(agent);
+    const token = this.generateToken(user);
 
     response.cookie('Authentication', token, {
       expires: expiresIn,
@@ -40,14 +40,14 @@ export class AuthService {
   }
 
   async loginMicroservices(data: LoginMicroservicesDto) {
-    const agent = await this.agentsService.verifyAgent(
+    const user = await this.usersService.verifyUser(
       data.identifier,
       data.password,
     );
-    if (!agent) {
+    if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.generateToken(agent);
+    return this.generateToken(user);
   }
 }

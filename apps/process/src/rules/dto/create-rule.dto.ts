@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Operator } from '../models/rules.model';
+import { Operator } from '../enums/operator.enum';
 
 export class CreateRuleDto {
   @IsEnum(Operator)

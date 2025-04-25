@@ -4,8 +4,8 @@ import { SchemaTypes, Types } from 'mongoose';
 
 @Schema({ versionKey: false, collection: 'matches', timestamps: true })
 export class MatchesDocument extends AbstractDocument {
-  @Prop({ type: SchemaTypes.ObjectId })
-  agentId: Types.ObjectId;
+  @Prop({ type: SchemaTypes.String })
+  agentId: string;
 
   @Prop({ type: SchemaTypes.Number })
   value: number;

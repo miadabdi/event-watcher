@@ -1,3 +1,4 @@
+import { JWTAuthGuard } from '@app/common';
 import {
   BadRequestException,
   Body,
@@ -8,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { GetAgentsByTriggerCountDto } from './dto/get-agents-by-trigger-count.dto';
@@ -15,6 +17,7 @@ import { GetRuleTriggersDto } from './dto/get-rule-triggers.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { RulesService } from './rules.service';
 
+@UseGuards(JWTAuthGuard)
 @Controller('rules')
 export class RulesController {
   constructor(private readonly rulesService: RulesService) {}

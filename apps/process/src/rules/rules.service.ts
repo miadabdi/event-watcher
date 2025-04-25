@@ -4,7 +4,7 @@ import { Model, Types } from 'mongoose';
 import { MatchesDocument } from '../events/models/matches.model';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
-import { Operator } from './models/rules.model';
+import { Operator } from './enums/operator.enum';
 import { RulesRepository } from './rules.repository';
 
 @Injectable()

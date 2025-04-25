@@ -1,4 +1,3 @@
-import { AgentDto } from '@app/common';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
@@ -11,5 +10,7 @@ export class HandleEventDto {
   @Type(() => Number)
   value: number;
 
-  user: AgentDto;
+  @IsString()
+  @IsNotEmpty()
+  agentId: string;
 }

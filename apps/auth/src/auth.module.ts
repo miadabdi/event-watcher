@@ -3,11 +3,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import * as Joi from 'joi';
-import { AgentsModule } from './agents/agents.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JWTStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       }),
       inject: [ConfigService],
     }),
-    AgentsModule,
+    UsersModule,
     LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,

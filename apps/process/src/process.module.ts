@@ -4,8 +4,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import * as Joi from 'joi';
 import { EventsModule } from './events/events.module';
-import { ProcessController } from './process.controller';
-import { ProcessService } from './process.service';
 import { RulesModule } from './rules/rules.module';
 
 @Module({
@@ -40,7 +38,5 @@ import { RulesModule } from './rules/rules.module';
     EventsModule,
     RulesModule,
   ],
-  controllers: [ProcessController],
-  providers: [ProcessService],
 })
 export class ProcessModule {}

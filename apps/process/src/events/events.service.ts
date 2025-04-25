@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Types } from 'mongoose';
 import { RulesService } from '../rules/rules.service';
 import { HandleEventDto } from './dto/handle-event.dto';
 import { EventsRepository } from './events.repository';
@@ -16,7 +15,7 @@ export class EventsService {
 
   async handleEvent(data: HandleEventDto) {
     await this.eventsRepository.create({
-      agentId: new Types.ObjectId(data.user._id),
+      agentId: data.agentId,
       eventName: data.eventName,
       value: data.value,
     });
@@ -28,7 +27,7 @@ export class EventsService {
 
     const matchDocs = matchingRules.map((rule) => {
       return {
-        agentId: new Types.ObjectId(data.user._id),
+        agentId: data.agentId,
         eventName: data.eventName,
         value: data.value,
         ruleId: rule._id,
