@@ -7,18 +7,12 @@ on:
     branches:
       - main
       - development
-    # don't rebuild image if someone only edited unrelated files
-    paths-ignore:
-      - 'README.md'
   pull_request_target:
     paths:
       - 'apps/auth/**'
     branches:
       - main
       - development
-    # don't rebuild image if someone only edited unrelated files
-    paths-ignore:
-      - 'README.md'
   workflow_dispatch:
 
 env:
