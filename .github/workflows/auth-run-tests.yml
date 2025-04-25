@@ -36,7 +36,7 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install -r
 
       - name: Run linter
         run: pnpm run lint
