@@ -53,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          dockerfile: apps/auth/Dockerfile
+          file: apps/auth/Dockerfile
           push: true
           target: development
           tags: |
