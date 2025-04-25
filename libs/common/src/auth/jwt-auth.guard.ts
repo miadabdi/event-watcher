@@ -16,8 +16,16 @@ export class JWTAuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const jwt = context.switchToHttp().getRequest<Request>()
-      .cookies?.Authentication;
+    const reqType = context.getType();
+    let data: any;
+    let jwt: string | null = null;
+    if (reqType === 'rpc') {
+      data = context.switchToRpc().getData();
+      jwt = data.Authentication;
+    } else if (reqType === 'http') {
+      data = context.switchToHttp().getRequest<Request>();
+      jwt = data.cookies?.Authentication;
+    }
 
     if (!jwt) {
       return false;
@@ -29,7 +37,7 @@ export class JWTAuthGuard implements CanActivate {
       })
       .pipe(
         tap((res) => {
-          context.switchToHttp().getRequest().user = res;
+          data.user = res;
         }),
         map(() => true),
       );

@@ -15,8 +15,6 @@ import { RulesModule } from './rules/rules.module';
       isGlobal: true,
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
-        AUTH_HOST: Joi.string().required(),
-        AUTH_PORT: Joi.number().required(),
         RABBITMQ_URL: Joi.string().required(),
       }),
     }),

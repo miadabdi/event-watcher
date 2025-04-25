@@ -9,15 +9,6 @@ import { AuthModule } from './auth.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
-  const configService = app.get(ConfigService);
-
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [configService.getOrThrow<string>('RABBITMQ_URL')],
-      queue: AUTH_SERVICE,
-    },
-  });
 
   app.use(cookieParser());
 
@@ -27,6 +18,16 @@ async function bootstrap() {
     }),
   );
   app.useLogger(app.get(Logger));
+
+  const configService = app.get(ConfigService);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [configService.getOrThrow<string>('RABBITMQ_URL')],
+      queue: AUTH_SERVICE,
+    },
+  });
 
   const port = configService.get<number>('HTTP_PORT');
 

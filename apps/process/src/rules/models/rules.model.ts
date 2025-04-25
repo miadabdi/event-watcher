@@ -8,7 +8,7 @@ export enum Operator {
   eq = 'eq',
 }
 
-@Schema({ versionKey: false, collection: 'events', timestamps: true })
+@Schema({ versionKey: false, collection: 'rules', timestamps: true })
 export class RulesDocument extends AbstractDocument {
   @Prop({ type: String, enum: Operator })
   operator: Operator;

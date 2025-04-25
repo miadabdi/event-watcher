@@ -7,7 +7,7 @@ export class EventsDocument extends AbstractDocument {
   @Prop({ type: SchemaTypes.ObjectId })
   agentId: Types.ObjectId;
 
-  @Prop({ type: SchemaTypes.Int32 })
+  @Prop({ type: SchemaTypes.Number })
   value: number;
 
   @Prop({ type: SchemaTypes.String })

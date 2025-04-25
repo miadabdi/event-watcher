@@ -4,6 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Response } from 'express';
 import { AgentsDocument } from './agents/models/agents.model';
 import { AuthService } from './auth.service';
+import { LoginMicroservicesDto } from './dto/login-microservices.dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
@@ -19,6 +20,11 @@ export class AuthController {
   ) {
     this.authService.login(agent, response);
     return agent;
+  }
+
+  @MessagePattern('login')
+  loginMicroservices(@Payload() data: LoginMicroservicesDto) {
+    return this.authService.loginMicroservices(data);
   }
 
   @UseGuards(JWTAuthGuard)
