@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMG_NAME: 'event-watcher'
+  IMG_NAME: 'event-watcher-auth'
   TAG: 'stable'
   USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
