@@ -1,4 +1,4 @@
-import { JWTAuthGuard } from '@app/common';
+import { JWTAuthGuard, PaginationOptionsDto } from '@app/common';
 import {
   BadRequestException,
   Body,
@@ -44,8 +44,8 @@ export class RulesController {
   }
 
   @Get()
-  findAll() {
-    return this.rulesService.findAll();
+  findAll(@Query() options: PaginationOptionsDto) {
+    return this.rulesService.findAll(options);
   }
 
   @Get(':id')

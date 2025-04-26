@@ -1,7 +1,9 @@
 import { Logger, NotFoundException } from '@nestjs/common';
 import { FilterQuery, Model, UpdateQuery } from 'mongoose';
+import { AbstractDocument } from './abstract.schema';
+import { Pagination, PaginationOptions, PaginationResult } from './pagination';
 
-export abstract class AbstractRepository<TDocument> {
+export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   protected abstract readonly logger: Logger;
 
   constructor(protected readonly model: Model<TDocument>) {}
@@ -53,6 +55,14 @@ export abstract class AbstractRepository<TDocument> {
     const documents = await this.model
       .find(filterQuery)
       .lean<TDocument[]>(true);
+
+    return documents;
+  }
+
+  async findPaginate(
+    options: PaginationOptions<TDocument>,
+  ): Promise<PaginationResult<TDocument>> {
+    const documents = await Pagination.paginate<TDocument>(this.model, options);
 
     return documents;
   }

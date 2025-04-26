@@ -1,3 +1,4 @@
+import { PaginationOptionsDto } from '@app/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -85,8 +86,8 @@ export class RulesService {
     return this.rulesRepository.create(createRuleDto);
   }
 
-  findAll() {
-    return this.rulesRepository.find({});
+  findAll(options: PaginationOptionsDto) {
+    return this.rulesRepository.findPaginate(options);
   }
 
   findOne(_id: string) {
