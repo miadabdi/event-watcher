@@ -51,12 +51,15 @@ services:
   rabbitmq:
     image: rabbitmq:3.13.1-management
     hostname: rmq
-    restart: unless-stopped
+    restart: no
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     ports:
-      - 5672:5672
+      - '${RABBITMQ_PORT}:5672' # rmq port
+      - '${RABBITMQ_CONSOLE_PORT}:15672' # management panel port
+    volumes:
+      - rmq_data:/var/lib/rabbitmq
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -65,15 +68,22 @@ services:
       start_period: 10s
 
   mongo:
-    image: mongo
-    restart: unless-stopped
+    image: mongo:7.0.20
+    hostname: mongo
+    restart: no
+    volumes:
+      - mongo_data:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASS}
     ports:
-      - 27017:27017
+      - ${MONGODB_PORT}:27017
     healthcheck:
       test: ['CMD', 'mongo', '--eval', "db.adminCommand('ping')"]
       interval: 30s
       timeout: 10s
       retries: 5
+
+volumes:
+  mongo_data:
+  rmq_data:
