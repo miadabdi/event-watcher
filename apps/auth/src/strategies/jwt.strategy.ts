@@ -9,7 +9,7 @@ import { UsersService } from '../users/users.service';
 export class JWTStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly agentsService: UsersService,
+    private readonly usersService: UsersService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -22,6 +22,6 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate({ _id }: IJWTPayload) {
-    return this.agentsService.getUser(_id);
+    return this.usersService.getUser(_id);
   }
 }

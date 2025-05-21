@@ -18,7 +18,9 @@ export class AuthService {
   generateToken(user: UsersDocument): string {
     const JWTPayload: IJWTPayload = {
       _id: user._id.toHexString(),
+      type: user.type,
     };
+
     const token = this.jwtService.sign(JWTPayload);
 
     return token;
@@ -40,7 +42,7 @@ export class AuthService {
   }
 
   async loginMicroservices(data: LoginMicroservicesDto) {
-    const user = await this.usersService.verifyUser(
+    const user = await this.usersService.verifyTypeAgent(
       data.identifier,
       data.password,
     );

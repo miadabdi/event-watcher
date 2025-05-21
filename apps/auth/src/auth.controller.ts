@@ -12,13 +12,12 @@ import { UsersDocument } from './users/models/users.model';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
+  @Post('login-user')
   @UseGuards(LocalAuthGuard)
   login(
     @CurrentUser() user: UsersDocument,
     @Res({ passthrough: true }) response: Response,
   ) {
-    console.log('reach');
     this.authService.login(user, response);
     return user;
   }

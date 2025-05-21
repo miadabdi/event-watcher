@@ -1,7 +1,7 @@
 import { CurrentUser } from '@app/common';
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JWTAuthGuard } from '../guards/jwt-auth.guard';
-import { CreateUserDto } from './dto/create-users.dto';
+import { CreateAgentDto, CreateUserDto } from './dto';
 import { UsersDocument } from './models/users.model';
 import { UsersService } from './users.service';
 
@@ -14,9 +14,14 @@ export class UsersController {
     return this.agentsService.createUser(createUserDto);
   }
 
+  @Post('agent')
+  async createAgent(@Body() createAgentDto: CreateAgentDto) {
+    return this.agentsService.createAgent(createAgentDto);
+  }
+
   @Get('me')
   @UseGuards(JWTAuthGuard)
-  getMe(@CurrentUser() agent: UsersDocument) {
-    return agent;
+  getMe(@CurrentUser() user: UsersDocument) {
+    return user;
   }
 }
