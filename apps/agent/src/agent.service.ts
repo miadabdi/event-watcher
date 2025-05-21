@@ -1,5 +1,4 @@
 import { PROCESS_SERVICE } from '@app/common';
-import { faker } from '@faker-js/faker';
 import {
   Inject,
   Injectable,
@@ -9,6 +8,8 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { AuthService } from './auth.service';
+import { CPUUsage } from './utils/cpu';
+import { MemoryUsage } from './utils/memory';
 
 @Injectable()
 export class AgentService implements OnApplicationBootstrap {
@@ -32,28 +33,20 @@ export class AgentService implements OnApplicationBootstrap {
     job.start();
   }
 
-  @Cron('0 * * * * *', { disabled: true, name: 'event-emitter' })
-  sendData() {
+  @Cron('*/6 * * * * *', { disabled: true, name: 'event-emitter' })
+  async sendData() {
     this.logger.log('Eventing');
 
-    const randomData = this.genData();
+    const data = await this.getData();
 
     const events = [
       {
-        eventName: 'cpu-temp',
-        value: randomData.cpuTemp,
-      },
-      {
-        eventName: 'cpu-voltage',
-        value: randomData.cpuVoltage,
-      },
-      {
-        eventName: 'cpu-util',
-        value: randomData.cpuUtil,
+        eventName: 'cpu-usage',
+        value: data.cpuUsage,
       },
       {
         eventName: 'memory-usage',
-        value: randomData.memoryUsage,
+        value: data.memoryUsage,
       },
     ];
 
@@ -65,32 +58,13 @@ export class AgentService implements OnApplicationBootstrap {
     });
   }
 
-  genData() {
-    const cpuVoltage = faker.number.float({
-      min: 0.9,
-      max: 1.2,
-      fractionDigits: 4,
-    });
+  async getData(): Promise<{ cpuUsage: number; memoryUsage: number }> {
+    const memoryUsage = MemoryUsage();
 
-    const memoryUsage = faker.number.int({
-      min: 500,
-      max: 4096,
-    });
-
-    const cpuTemp = faker.number.int({
-      min: 46,
-      max: 90,
-    });
-
-    const cpuUtil = faker.number.float({
-      min: 5,
-      max: 100,
-    });
+    const cpuUsage = await CPUUsage(1000);
 
     return {
-      cpuTemp,
-      cpuUtil,
-      cpuVoltage,
+      cpuUsage,
       memoryUsage,
     };
   }
