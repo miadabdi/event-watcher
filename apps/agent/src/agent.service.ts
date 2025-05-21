@@ -1,27 +1,42 @@
 import { PROCESS_SERVICE } from '@app/common';
 import { faker } from '@faker-js/faker';
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  OnApplicationBootstrap,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Cron } from '@nestjs/schedule';
+import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class AgentService {
+export class AgentService implements OnApplicationBootstrap {
   private readonly logger = new Logger(AgentService.name);
   private jwt: string;
 
   constructor(
-    private readonly configService: ConfigService,
+    private readonly authService: AuthService,
+    private schedulerRegistry: SchedulerRegistry,
     @Inject(PROCESS_SERVICE) private readonly processClient: ClientProxy,
   ) {}
 
-  @Cron('* * * * * *', { name: 'event-emitter' })
+  async onApplicationBootstrap() {
+    // Auth this agent before any operation
+    await this.authService.login();
+    this.jwt = this.authService.getJwt();
+
+    // enable event-emitter job
+    this.logger.log('Enabling event-emitter job');
+    const job = this.schedulerRegistry.getCronJob('event-emitter');
+    job.start();
+  }
+
+  @Cron('0 * * * * *', { disabled: true, name: 'event-emitter' })
   sendData() {
     this.logger.log('Eventing');
 
     const randomData = this.genData();
-
-    const agentId = this.configService.getOrThrow<string>('AGENT_ID');
 
     const events = [
       {
@@ -44,8 +59,8 @@ export class AgentService {
 
     events.forEach((eventData) => {
       this.processClient.emit('event', {
+        Authentication: this.jwt,
         ...eventData,
-        agentId: agentId,
       });
     });
   }
