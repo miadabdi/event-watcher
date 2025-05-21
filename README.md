@@ -90,6 +90,7 @@ docker run --network=host \
 docker run --network=host \
   -e RABBITMQ_URL="amqp://user:pass@rabbitmq:5672" \
   -e AGENT_ID=id \
+  -e AGENT_PASSWORD=password \
   miadabdi/event-watcher-agent:stable-latest
 ```
 
